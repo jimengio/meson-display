@@ -1,8 +1,9 @@
 {
   "name": "@jimengio/meson-display",
-  "version": "0.1.0-a1",
+  "version": "0.1.0-a2",
   "description": "",
-  "main": "index.js",
+  "main": "./lib/index.js",
+  "typings": "./lib/index.d.ts",
   "scripts": {
     "dev": "webpack-dev-server --hot --config webpack/dev.js",
     "watch": "webpack-dev-server --hot --config webpack/dev.js",
