@@ -30,10 +30,18 @@ let DemoGroupedTimeline: SFC<{}> = (props) => {
   return (
     <div className={styleContainer}>
       <GroupedTimeline groups={timeEvents} />
+
+      <div style={{ height: 40 }} />
+
+      <a href="https://github.com/jimengio/meson-display" target="_blank">
+        Source
+      </a>
     </div>
   );
 };
 
 export default DemoGroupedTimeline;
 
-let styleContainer = css``;
+let styleContainer = css`
+  padding: 16px;
+`;

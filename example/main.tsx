@@ -6,7 +6,8 @@ import { parseRoutePath, IRouteParseResult } from "@jimengio/ruled-router";
 import { routerRules } from "./models/router-rules";
 
 import Container from "./pages/container";
-import { demo } from "../src/index";
+
+import "./main.css";
 
 const renderApp = () => {
   let routerTree = parseRoutePath(window.location.hash.slice(1), routerRules);
@@ -19,8 +20,6 @@ window.onload = renderApp;
 window.addEventListener("hashchange", () => {
   renderApp();
 });
-
-demo();
 
 declare var module: any;
 

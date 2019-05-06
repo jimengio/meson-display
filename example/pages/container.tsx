@@ -28,23 +28,25 @@ const renderChildPage = (routerTree: IRouteParseResult) => {
 let pages = [
   {
     title: "Home",
+    name: genRouter.home.name,
     go: genRouter.home.go,
   },
 
   {
     title: "grouped-timeline",
+    name: genRouter.groupedTimeline.name,
     go: genRouter.groupedTimeline.go,
   },
 ];
 
 let renderSidebar = (router: IRouteParseResult) => {
   return (
-    <div>
-      {pages.map((info, idx) => {
+    <div className={styleSidebar}>
+      {pages.map((info) => {
         return (
           <div
-            key={idx}
-            className={styleEntry}
+            key={info.name}
+            className={cx(styleEntry, info.name === router.name ? styleActive : null)}
             onClick={() => {
               info.go();
             }}
@@ -71,10 +73,20 @@ const styleContainer = css`
   font-family: "Helvetica";
 `;
 
-const styleTitle = css`
-  margin-bottom: 16px;
-`;
-
 let styleEntry = css`
   line-height: 40px;
+  padding: 0 8px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #eee;
+  }
+`;
+
+let styleSidebar = css`
+  border-right: 1px solid #eee;
+`;
+
+let styleActive = css`
+  background-color: #eee;
 `;
