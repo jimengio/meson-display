@@ -25,7 +25,7 @@ let GroupedTimeline: SFC<{ groups: ITimelineGroup[] }> = (props) => {
               <div className={styleChildren}>
                 {group.children.map((item, itemIdx) => {
                   return (
-                    <div className={styleChildItem}>
+                    <div key={itemIdx} className={styleChildItem}>
                       <div className={styleItemIcon} />
                       <div>{item.title}</div>
                       <div>{item.content}</div>
