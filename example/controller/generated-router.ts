@@ -31,6 +31,12 @@ export let genRouter = {
     path: () => `/grouped-timeline`,
     go: () => switchPath(`/grouped-timeline`),
   },
+  imageViewer: {
+    name: "image-viewer",
+    raw: "image-viewer",
+    path: () => `/image-viewer`,
+    go: () => switchPath(`/image-viewer`),
+  },
   else: {
     name: "else",
     raw: "else",

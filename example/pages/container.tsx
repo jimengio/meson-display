@@ -8,6 +8,7 @@ import Content from "./content";
 import { HashRedirect } from "@jimengio/ruled-router/lib/dom";
 import { genRouter } from "controller/generated-router";
 import DemoGroupedTimeline from "./demo-grouped-timeline";
+import DemoImageViewer from "./demo-image-viewer";
 
 const renderChildPage = (routerTree: IRouteParseResult) => {
   if (routerTree != null) {
@@ -18,6 +19,8 @@ const renderChildPage = (routerTree: IRouteParseResult) => {
         return <Content />;
       case genRouter.groupedTimeline.name:
         return <DemoGroupedTimeline />;
+      case genRouter.imageViewer.name:
+        return <DemoImageViewer />;
       default:
         return <HashRedirect to={genRouter.home.name} delay={2} placeholder={"2s to redirect"} />;
     }
@@ -31,11 +34,15 @@ let pages = [
     name: genRouter.home.name,
     go: genRouter.home.go,
   },
-
   {
     title: "grouped-timeline",
     name: genRouter.groupedTimeline.name,
     go: genRouter.groupedTimeline.go,
+  },
+  {
+    title: "image viewer",
+    name: genRouter.imageViewer.name,
+    go: genRouter.imageViewer.go,
   },
 ];
 

@@ -7,6 +7,7 @@ import { routerRules } from "./models/router-rules";
 
 import Container from "./pages/container";
 
+import "font-awesome/css/font-awesome.min.css";
 import "./main.css";
 
 const renderApp = () => {
