@@ -5,7 +5,7 @@ import ImageViewer from "../../src/image-viewer";
 import JimoButton from "../../src/jimo-button";
 
 export default function DemoImageViewer() {
-  let [visible, setVisible] = useState(true);
+  let [visible, setVisible] = useState(false);
 
   return (
     <div className={styleContainer}>
@@ -26,8 +26,8 @@ export default function DemoImageViewer() {
         onClose={() => {
           setVisible(false);
         }}
-        hasLeftOne
-        hasRightOne
+        hasLeftOne={false}
+        hasRightOne={false}
       />
     </div>
   );
