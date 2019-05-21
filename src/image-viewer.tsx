@@ -110,6 +110,7 @@ export default class ImageViewer extends React.Component<IProps, IState> {
 
     let r90 = currentRotation === EOrientation.r90 || currentRotation === EOrientation.r270;
     let { width, height } = this.state;
+
     return (
       <div className={cx(fullscreen, column, styleContainer)}>
         <div className={cx(flex, stylePreviewArea)}>
@@ -124,9 +125,9 @@ export default class ImageViewer extends React.Component<IProps, IState> {
                   src={this.getImageUrl()}
                   className={styleImage}
                   style={{
-                    translate: r90 ? `${(height - width) / 2}px ${(width - height) / 2}px` : null,
                     transformOrigin: "center",
-                    transform: `rotate(${currentRotation * 90}deg)`,
+                    // translate to get a correct rotation origin, which the center of image
+                    transform: `${r90 ? `translate(${(height - width) / 2}px, ${(width - height) / 2}px) ` : ""}rotate(${currentRotation * 90}deg)`,
                   }}
                   width={this.state.width}
                   height={this.state.height}
