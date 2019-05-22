@@ -56,6 +56,18 @@ import { ImageViewer } from "@jimengio/meson-display"
 />
 ```
 
+```tsx
+import { Space } from "@jimengio/meson-display"
+
+<Space width={24} />
+```
+
+```tsx
+import { JimoButton } from "@jimengio/meson-display"
+
+<JimoButton text="Toggle" onClick={() => {}} />
+```
+
 ### Workflow
 
 https://github.com/jimengio/ts-workflow
