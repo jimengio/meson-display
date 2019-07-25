@@ -2,7 +2,7 @@
 
 > A collection of components of displaying information.
 
-Demo http://fe.jimu.io/meson-display/#/grouped-timeline
+Demo http://fe.jimu.io/meson-display/
 
 ### Usage
 
