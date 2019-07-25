@@ -9,6 +9,9 @@ export const routerRules: IRouteRule[] = [
   {
     path: "image-viewer",
   },
+  {
+    path: "dropdown-area",
+  },
   { path: "else" },
   { path: "", name: "home" },
 ];

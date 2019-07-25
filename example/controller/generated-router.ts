@@ -37,6 +37,12 @@ export let genRouter = {
     path: () => `/image-viewer`,
     go: () => switchPath(`/image-viewer`),
   },
+  dropdownArea: {
+    name: "dropdown-area",
+    raw: "dropdown-area",
+    path: () => `/dropdown-area`,
+    go: () => switchPath(`/dropdown-area`),
+  },
   else: {
     name: "else",
     raw: "else",
