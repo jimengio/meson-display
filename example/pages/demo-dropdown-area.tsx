@@ -26,7 +26,7 @@ let DemoDropdownArea: FC<{}> = (props) => {
       </DropdownArea>
 
       <DropdownArea className={cx(styleTrigger, styleWider)} renderContent={(onClose) => "Some content"} hideClose>
-        <div>Align to right</div>
+        <div>Width inherited</div>
       </DropdownArea>
     </div>
   );

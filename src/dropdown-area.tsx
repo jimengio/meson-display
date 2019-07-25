@@ -3,7 +3,8 @@ import { CSSTransition, TransitionGroup } from "react-transition-group";
 import EventEmitter from "eventemitter3";
 
 let transitionDuration = 160;
-let relativeOffset = 4; /** 菜单相对弹出位置有一个偏差, 以便看起来不要过于死板 */
+let relativeOffset = 4; /** 菜单相对弹出位置有一个上下偏差, 以免形成遮挡 */
+let containOffset = 2; /** 菜单相对弹出位置有一个左右偏差, 以便看起来不要过于死板 */
 let containerName = "meson-display-container";
 
 import React, { FC, useEffect, useState, ReactNode, RefObject } from "react";
@@ -145,7 +146,7 @@ export default class DropdownArea extends React.Component<IProps, IState> {
         inheritedWidth: rect.width,
         position: {
           top: rect.bottom + relativeOffset,
-          right: Math.max(window.innerWidth - rect.right - relativeOffset, relativeOffset),
+          right: Math.max(window.innerWidth - rect.right - containOffset, relativeOffset),
         },
       });
     } else {
@@ -154,7 +155,7 @@ export default class DropdownArea extends React.Component<IProps, IState> {
         inheritedWidth: rect.width,
         position: {
           top: rect.bottom + relativeOffset,
-          left: Math.max(rect.left - relativeOffset, relativeOffset),
+          left: Math.max(rect.left - containOffset, relativeOffset),
         },
       });
     }
