@@ -24,6 +24,10 @@ let DemoDropdownArea: FC<{}> = (props) => {
       <DropdownArea className={styleTrigger} renderContent={(onClose) => "Some content"} hideClose alignToRight>
         <div>Align to right</div>
       </DropdownArea>
+
+      <DropdownArea className={cx(styleTrigger, styleWider)} renderContent={(onClose) => "Some content"} hideClose>
+        <div>Align to right</div>
+      </DropdownArea>
     </div>
   );
 };
@@ -38,4 +42,8 @@ let styleTrigger = css`
   background-color: #ddd;
   margin: 16px;
   padding: 8px;
+`;
+
+let styleWider = css`
+  width: 300px;
 `;

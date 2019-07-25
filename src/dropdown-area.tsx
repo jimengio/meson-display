@@ -29,6 +29,7 @@ interface IProps {
 
 interface IState {
   visible: boolean;
+  inheritedWidth: number;
   position: {
     top?: number;
     bottom?: number;
@@ -50,6 +51,7 @@ export default class DropdownArea extends React.Component<IProps, IState> {
 
     this.state = {
       visible: false,
+      inheritedWidth: undefined,
       position: {},
     };
 
@@ -107,7 +109,7 @@ export default class DropdownArea extends React.Component<IProps, IState> {
             className={cx(column, stylePopPage, "modal-card", this.props.cardClassName)}
             style={{
               maxHeight: window.innerHeight - 80,
-              width: this.props.width,
+              width: this.props.width || this.state.inheritedWidth,
               top: position.top,
               bottom: position.bottom,
               left: position.left,
@@ -140,6 +142,7 @@ export default class DropdownArea extends React.Component<IProps, IState> {
     if (this.props.alignToRight) {
       this.mergeState({
         visible: true,
+        inheritedWidth: rect.width,
         position: {
           top: rect.bottom + relativeOffset,
           right: Math.max(window.innerWidth - rect.right - relativeOffset, relativeOffset),
@@ -148,6 +151,7 @@ export default class DropdownArea extends React.Component<IProps, IState> {
     } else {
       this.mergeState({
         visible: true,
+        inheritedWidth: rect.width,
         position: {
           top: rect.bottom + relativeOffset,
           left: Math.max(rect.left - relativeOffset, relativeOffset),
