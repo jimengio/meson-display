@@ -96,10 +96,10 @@
   resolved "https://registry.npm.taobao.org/@jimengio/doc-frame/download/@jimengio/doc-frame-0.1.0.tgz#63d7d3f80b7ce0295c405ff9b7b29f9ee54417fe"
   integrity sha1-Y9fT+At84ClcQF/5t7KfnuVEF/4=
 
-"@jimengio/fa-icons@^0.1.11":
-  version "0.1.11"
-  resolved "https://registry.yarnpkg.com/@jimengio/fa-icons/-/fa-icons-0.1.11.tgz#f071b7d88a9b1f189943886be9396f6400dc243e"
-  integrity sha512-jcBtzPD34VTosq1CZWAZCy9vMvZvtBlUI4HwHQ7bVnj4asJcDg1sOdn6WhrKHNNmPj3HI3RYeeS950tkc7Uwug==
+"@jimengio/fa-icons@^0.2.0":
+  version "0.2.0"
+  resolved "https://registry.npm.taobao.org/@jimengio/fa-icons/download/@jimengio/fa-icons-0.2.0.tgz#50cfe599ee4c9ab70e780be4ddc6dc78d8bd33a8"
+  integrity sha1-UM/lme5MmrcOeAvk3cbceNi9M6g=
 
 "@jimengio/jimo-icons@^0.1.19":
   version "0.1.22"

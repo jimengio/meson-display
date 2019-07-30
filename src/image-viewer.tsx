@@ -8,7 +8,7 @@ import urlParse from "url-parse";
 
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 import FaIcon from "@jimengio/fa-icons";
-import { IconName } from "@jimengio/fa-icons";
+import { EFaIcon } from "@jimengio/fa-icons";
 
 import { safeGet } from "@jimengio/safe-property";
 
@@ -163,7 +163,7 @@ export default class ImageViewer extends React.Component<IProps, IState> {
                 window.open(this.getImageUrl());
               }}
             />
-            <FaIcon className={styleIcon} name={IconName.RotateRight} onClick={this.rotate} />
+            <FaIcon className={styleIcon} name={EFaIcon.RotateRight} onClick={this.rotate} />
             <JimoIcon
               className={styleIcon}
               name={EJimoIcon.download}
@@ -190,7 +190,7 @@ export default class ImageViewer extends React.Component<IProps, IState> {
   renderLeftIcon() {
     return (
       <div className={styleArrowIcon} onClick={this.props.onViewLeft}>
-        <FaIcon name={IconName.ArrowCircleLeft} />
+        <FaIcon name={EFaIcon.ArrowCircleLeft} />
       </div>
     );
   }
@@ -198,7 +198,7 @@ export default class ImageViewer extends React.Component<IProps, IState> {
   renderRightIcon() {
     return (
       <div className={cx(styleArrowIcon, styleArrowRight)} onClick={this.props.onViewRight}>
-        <FaIcon name={IconName.ArrowCircleRight} />
+        <FaIcon name={EFaIcon.ArrowCircleRight} />
       </div>
     );
   }
