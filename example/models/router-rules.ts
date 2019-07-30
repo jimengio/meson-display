@@ -12,6 +12,9 @@ export const routerRules: IRouteRule[] = [
   {
     path: "dropdown-area",
   },
+  {
+    path: "with-overflow",
+  },
   { path: "else" },
   { path: "", name: "home" },
 ];

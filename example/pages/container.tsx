@@ -11,6 +11,7 @@ import DemoGroupedTimeline from "./demo-grouped-timeline";
 import DemoImageViewer from "./demo-image-viewer";
 import { DocSidebar, ISidebarEntry } from "@jimengio/doc-frame";
 import DemoDropdownArea from "./demo-dropdown-area";
+import DemoWithOverflow from "./demo-with-overflow";
 
 const renderChildPage = (routerTree: IRouteParseResult) => {
   if (routerTree != null) {
@@ -25,6 +26,8 @@ const renderChildPage = (routerTree: IRouteParseResult) => {
         return <DemoImageViewer />;
       case genRouter.dropdownArea.name:
         return <DemoDropdownArea />;
+      case genRouter.withOverflow.name:
+        return <DemoWithOverflow />;
       default:
         return (
           <HashRedirect to={genRouter.home.name} delay={2}>
@@ -52,6 +55,10 @@ let items: ISidebarEntry[] = [
   {
     title: "dropdown area",
     path: genRouter.dropdownArea.name,
+  },
+  {
+    title: "with overflow",
+    path: genRouter.withOverflow.name,
   },
 ];
 

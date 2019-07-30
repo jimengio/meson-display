@@ -43,6 +43,12 @@ export let genRouter = {
     path: () => `/dropdown-area`,
     go: () => switchPath(`/dropdown-area`),
   },
+  withOverflow: {
+    name: "with-overflow",
+    raw: "with-overflow",
+    path: () => `/with-overflow`,
+    go: () => switchPath(`/with-overflow`),
+  },
   else: {
     name: "else",
     raw: "else",

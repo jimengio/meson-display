@@ -4,3 +4,5 @@ export { default as Space } from "./space";
 export { default as JimoButton } from "./jimo-button";
 
 export { default as DropdownArea } from "./dropdown-area";
+
+export { default as WithOverflow } from "./with-overflow";
