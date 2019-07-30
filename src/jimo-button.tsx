@@ -2,11 +2,11 @@ import React from "react";
 import { css, cx } from "emotion";
 import { immerHelpers, ImmerStateFunc, MergeStateFunc } from "@jimengio/shared-utils";
 import { rowCenter } from "@jimengio/shared-utils";
-import FaIcon, { IconName } from "@jimengio/fa-icons";
+import FaIcon, { EFaIcon } from "@jimengio/fa-icons";
 import Space from "./space";
 
 interface IProps {
-  icon?: IconName;
+  icon?: EFaIcon;
   text: string;
   className?: string;
   onClick: () => void;
