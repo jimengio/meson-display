@@ -140,7 +140,13 @@ export default class DropdownArea extends React.Component<IProps, IState> {
 
     let rect = this.triggerEl.current.getBoundingClientRect();
 
-    if (this.props.alignToRight) {
+    // 如果计算宽度超出显示区域, 往左弹出
+    let almostOut = false;
+    if (this.props.width != null) {
+      almostOut = rect.left + this.props.width > window.innerWidth;
+    }
+
+    if (this.props.alignToRight || almostOut) {
       this.mergeState({
         visible: true,
         inheritedWidth: rect.width,
