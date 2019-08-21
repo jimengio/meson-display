@@ -45,7 +45,6 @@ let styleItem = css`
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  border-bottom: 1px solid #eee;
   cursor: pointer;
   color: hsla(0, 0%, 30%);
   user-select: none;
