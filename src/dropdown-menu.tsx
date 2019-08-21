@@ -3,7 +3,7 @@ import { css, cx } from "emotion";
 import DropdownArea from "./dropdown-area";
 import MenuList, { MenuValue, IMenuListItem } from "./menu-list";
 import FaIcon, { EFaIcon } from "@jimengio/fa-icons";
-import { rowParted } from "@jimengio/shared-utils";
+import { rowParted, center, expand } from "@jimengio/shared-utils";
 
 let DropdownMenu: FC<{
   value: MenuValue;
@@ -13,15 +13,21 @@ let DropdownMenu: FC<{
   menuClassName?: string;
   itemClassName?: string;
   placeholder?: string;
+  emptyLocale?: string;
   menuWidth?: number;
   disabled?: boolean;
 }> = (props) => {
   /** Methods */
   /** Effects */
   /** Renderers */
+
+  let selectedItem = props.items.find((item) => item.value === props.value);
+
   let inputElement = (
     <div className={cx(rowParted, styleContainer, props.disabled ? styleDisabled : null, props.className)}>
-      <span>{props.value || <span className={stylePlaceholder}>{props.placeholder || "Please select"}</span>}</span>
+      <span className={cx(styleValue)}>
+        {selectedItem ? selectedItem.title : <span className={stylePlaceholder}>{props.placeholder || "Please select"}</span>}
+      </span>
       <FaIcon name={EFaIcon.AngleDown} className={styleIcon} />
     </div>
   );
@@ -34,7 +40,11 @@ let DropdownMenu: FC<{
     <DropdownArea
       hideClose={true}
       width={props.menuWidth}
+      cardClassName={styleMenu}
       renderContent={(onClose) => {
+        if (props.items.length === 0) {
+          return <div className={cx(center, styleEmptyList)}>{props.emptyLocale || "No data"}</div>;
+        }
         return (
           <MenuList
             value={props.value}
@@ -79,4 +89,22 @@ let styleIcon = css`
 let styleDisabled = css`
   background-color: hsl(0, 0%, 96%);
   cursor: not-allowed;
+`;
+
+let styleMenu = css`
+  min-height: 8px;
+`;
+
+let styleEmptyList = css`
+  font-size: 12px;
+  color: hsl(0, 0%, 75%);
+  user-select: none;
+  padding: 12px;
+`;
+
+let styleValue = css`
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 `;
