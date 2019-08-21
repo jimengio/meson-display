@@ -80,6 +80,37 @@ import { JimoButton } from "@jimengio/meson-display"
 <JimoButton text="Toggle" onClick={() => {}} />
 ```
 
+* Dropdown Menu
+
+```tsx
+let items: IMenuListItem[] = [
+  {
+    value: "a",
+    title: "A",
+  },
+  {
+    value: "b",
+    title: "使用 optionLabelProp 指定回填到选择框的 Option 属性。uses B",
+  },
+  {
+    value: "c",
+    title: "多选，从已有条目中选择。",
+  },
+  {
+    value: "d",
+    title: "弹出一个下拉菜单给用户选择操作，用于代替原生的选择器，或者需要一个更优雅的多选器时。",
+  },
+];
+
+<DropdownMenu className={styleShortInput}
+              value={selected}
+              items={items}
+              onSelect={(value) => setSelected(value as string)}
+              disabled={false}
+              placeholder={"请选择"}
+              emptyLocale={"没有数据"}  />
+```
+
 ### Workflow
 
 https://github.com/jimengio/ts-workflow
