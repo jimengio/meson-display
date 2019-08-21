@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { FC, useMemo } from "react";
 import { css, cx } from "emotion";
 import DropdownArea from "./dropdown-area";
 import MenuList, { MenuValue, IMenuListItem } from "./menu-list";
@@ -23,13 +23,16 @@ let DropdownMenu: FC<{
 
   let selectedItem = props.items.find((item) => item.value === props.value);
 
-  let inputElement = (
-    <div className={cx(rowParted, styleContainer, props.disabled ? styleDisabled : null, props.className)}>
-      <span className={cx(styleValue)}>
-        {selectedItem ? selectedItem.title : <span className={stylePlaceholder}>{props.placeholder || "Please select"}</span>}
-      </span>
-      <FaIcon name={EFaIcon.AngleDown} className={styleIcon} />
-    </div>
+  let inputElement = useMemo(
+    () => (
+      <div className={cx(rowParted, styleContainer, props.disabled ? styleDisabled : null, props.className)}>
+        <span className={cx(styleValue)}>
+          {selectedItem ? selectedItem.title : <span className={stylePlaceholder}>{props.placeholder || "Please select"}</span>}
+        </span>
+        <FaIcon name={EFaIcon.AngleDown} className={styleIcon} />
+      </div>
+    ),
+    [props.disabled, props.value]
   );
 
   if (props.disabled) {
