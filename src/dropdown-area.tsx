@@ -7,7 +7,7 @@ let relativeOffset = 4; /** 菜单相对弹出位置有一个上下偏差, 以�
 let containOffset = 2; /** 菜单相对弹出位置有一个左右偏差, 以便看起来不要过于死板 */
 let containerName = "meson-display-container";
 
-import React, { FC, useEffect, useState, ReactNode, RefObject } from "react";
+import React, { FC, useEffect, useState, ReactNode, RefObject, CSSProperties } from "react";
 import ReactDOM from "react-dom";
 import { rowParted, column, immerHelpers, ImmerStateFunc, MergeStateFunc } from "@jimengio/shared-utils";
 import JimoIcon, { EJimoIcon } from "@jimengio/jimo-icons";
@@ -19,11 +19,14 @@ interface IProps {
   title?: string;
   /** trigger 区域的样式 */
   className?: string;
+  style?: CSSProperties;
   /** 弹出的卡片的样式 */
   cardClassName?: string;
   /** 菜单对准右侧, 从右往左弹出 */
   alignToRight?: boolean;
   width?: number;
+  /** 不一定精确, 根据区域检测如果超出屏幕, 菜单将上移放在屏幕边缘 */
+  guessHeight?: number;
   renderContent: (onClose: () => void) => ReactNode;
   hideClose?: boolean;
 }
@@ -92,7 +95,7 @@ export default class DropdownArea extends React.Component<IProps, IState> {
   render() {
     return (
       <>
-        <div className={cx(styleTrigger, this.props.className)} onClick={this.onTriggerClick} ref={this.triggerEl}>
+        <div className={cx(styleTrigger, this.props.className)} style={this.props.style} onClick={this.onTriggerClick} ref={this.triggerEl}>
           {this.props.children}
         </div>
         {this.renderDropdown()}
@@ -142,8 +145,12 @@ export default class DropdownArea extends React.Component<IProps, IState> {
 
     // 如果计算宽度超出显示区域, 往左弹出
     let almostOut = false;
+    let reachingBottom = false;
     if (this.props.width != null) {
       almostOut = rect.left + this.props.width > window.innerWidth;
+    }
+    if (this.props.guessHeight != null) {
+      reachingBottom = rect.bottom + this.props.guessHeight > window.innerHeight;
     }
 
     if (this.props.alignToRight || almostOut) {
@@ -151,8 +158,9 @@ export default class DropdownArea extends React.Component<IProps, IState> {
         visible: true,
         inheritedWidth: rect.width,
         position: {
-          top: rect.bottom + relativeOffset,
+          top: reachingBottom ? null : rect.bottom + relativeOffset,
           right: Math.max(window.innerWidth - rect.right - containOffset, relativeOffset),
+          bottom: reachingBottom ? 8 : null,
         },
       });
     } else {
@@ -160,8 +168,9 @@ export default class DropdownArea extends React.Component<IProps, IState> {
         visible: true,
         inheritedWidth: rect.width,
         position: {
-          top: rect.bottom + relativeOffset,
+          top: reachingBottom ? null : rect.bottom + relativeOffset,
           left: Math.max(rect.left - containOffset, relativeOffset),
+          bottom: reachingBottom ? 8 : null,
         },
       });
     }
