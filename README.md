@@ -104,6 +104,7 @@ let items: IMenuListItem[] = [
 
 <DropdownMenu className={styleShortInput}
               value={selected}
+              allowClear={false}
               items={items}
               onSelect={(value) => setSelected(value as string)}
               disabled={false}
