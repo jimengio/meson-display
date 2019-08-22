@@ -122,6 +122,7 @@ let styleRemoveIcon = css`
 let styleDisabled = css`
   background-color: hsl(0, 0%, 96%);
   cursor: not-allowed;
+  color: hsla(0, 0%, 0%, 0.25);
 `;
 
 let styleMenu = css`
