@@ -4,6 +4,7 @@ import DropdownArea from "./dropdown-area";
 import MenuList, { MenuValue, IMenuListItem } from "./menu-list";
 import FaIcon, { EFaIcon } from "@jimengio/fa-icons";
 import { rowParted, center, expand } from "@jimengio/shared-utils";
+import JimoIcon, { EJimoIcon } from "@jimengio/jimo-icons";
 
 let DropdownMenu: FC<{
   value: MenuValue;
@@ -16,6 +17,7 @@ let DropdownMenu: FC<{
   emptyLocale?: string;
   menuWidth?: number;
   disabled?: boolean;
+  allowClear?: boolean;
 }> = (props) => {
   /** Methods */
   /** Effects */
@@ -30,6 +32,16 @@ let DropdownMenu: FC<{
           {selectedItem ? selectedItem.title : <span className={stylePlaceholder}>{props.placeholder || "Please select"}</span>}
         </span>
         <FaIcon name={EFaIcon.AngleDown} className={styleIcon} />
+        {props.allowClear && selectedItem != null ? (
+          <JimoIcon
+            name={EJimoIcon.slimCross}
+            className={styleRemoveIcon}
+            onClick={(event) => {
+              event.stopPropagation();
+              props.onSelect(null);
+            }}
+          />
+        ) : null}
       </div>
     ),
     [props.disabled, props.value]
@@ -76,6 +88,11 @@ let styleContainer = css`
   border-radius: 4px;
   min-width: 120px;
   display: inline-flex;
+  position: relative;
+
+  &:hover i.jimo {
+    opacity: 1;
+  }
 `;
 
 let stylePlaceholder = css`
@@ -87,11 +104,25 @@ let styleIcon = css`
   color: hsla(0, 0%, 0%, 0.25);
   user-select: none;
   margin-left: 8px;
+  font-size: 16px;
 `;
 
+let styleRemoveIcon = css`
+  font-size: 10px;
+  position: absolute;
+  right: 12px;
+  background-color: white;
+  color: hsla(0, 0%, 0%, 0.25);
+  opacity: 0;
+
+  &:hover {
+    color: hsla(0, 0%, 0%, 0.5);
+  }
+`;
 let styleDisabled = css`
   background-color: hsl(0, 0%, 96%);
   cursor: not-allowed;
+  color: hsla(0, 0%, 0%, 0.25);
 `;
 
 let styleMenu = css`

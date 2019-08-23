@@ -42,7 +42,9 @@ let DemoDropdownArea: FC<{}> = (props) => {
         <div>A close button</div>
       </DropdownArea>
 
-      <DropdownArea className={cx(styleTrigger)} width={400} renderContent={(onClose) => "Some content"} hideClose>
+      <div style={{ height: 400 }}></div>
+
+      <DropdownArea guessHeight={80} className={cx(styleTrigger)} width={400} renderContent={(onClose) => "Some content"} hideClose>
         <div>detect edge</div>
       </DropdownArea>
     </div>

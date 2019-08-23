@@ -37,7 +37,14 @@ let DemoDropdownMenu: FC<{}> = (props) => {
         </div>
       </div>
       <div className={styleBlock}>
-        <DropdownMenu className={styleShortInput} value={selected} items={items} onSelect={(value) => setSelected(value as string)} placeholder={"请选择"} />
+        <DropdownMenu
+          allowClear
+          className={styleShortInput}
+          value={selected}
+          items={items}
+          onSelect={(value) => setSelected(value as string)}
+          placeholder={"请选择"}
+        />
       </div>
       <div className={styleBlock}>
         <DropdownMenu disabled value={selected} items={items} onSelect={(value) => setSelected(value as string)} placeholder={"请选择"} />
