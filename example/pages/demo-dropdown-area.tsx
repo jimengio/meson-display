@@ -2,6 +2,7 @@ import React, { FC, useState } from "react";
 import { css, cx } from "emotion";
 import DropdownArea from "../../src/dropdown-area";
 import { expand } from "@jimengio/shared-utils";
+import JimoIcon, { EJimoIcon } from "@jimengio/jimo-icons";
 
 let DemoDropdownArea: FC<{}> = (props) => {
   /** Methods */
@@ -9,7 +10,12 @@ let DemoDropdownArea: FC<{}> = (props) => {
   /** Renderers */
   return (
     <div className={cx(expand, styleContainer)}>
-      <DropdownArea className={styleTrigger} title="A title" renderContent={(onClose) => "Some content"}>
+      <DropdownArea
+        className={styleTrigger}
+        title="A title"
+        renderContent={(onClose) => "Some content"}
+        renderCloseIcon={(className, onClose) => <JimoIcon name={EJimoIcon.slimCross} className={className} onClick={onClose} />}
+      >
         <div>Content with title</div>
       </DropdownArea>
 

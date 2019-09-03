@@ -10,7 +10,6 @@ let containerName = "meson-display-container";
 import React, { FC, useEffect, useState, ReactNode, RefObject, CSSProperties } from "react";
 import ReactDOM from "react-dom";
 import { rowParted, column, immerHelpers, ImmerStateFunc, MergeStateFunc } from "@jimengio/shared-utils";
-import JimoIcon, { EJimoIcon } from "@jimengio/jimo-icons";
 
 let bus = new EventEmitter();
 let menuEvent = "menu-event";
@@ -29,6 +28,9 @@ interface IProps {
   guessHeight?: number;
   renderContent: (onClose: () => void) => ReactNode;
   hideClose?: boolean;
+
+  /** 分离依赖到外部, 默认使用 UTF8 字符 ✕ */
+  renderCloseIcon?: (className: string, onClose: () => void) => ReactNode;
 }
 
 interface IState {
@@ -126,7 +128,13 @@ export default class DropdownArea extends React.Component<IProps, IState> {
                 <span>{this.props.title}</span>
               </div>
             ) : null}
-            {this.props.hideClose ? null : <JimoIcon name={EJimoIcon.slimCross} className={styleCloseIcon} onClick={this.onClose} />}
+            {this.props.hideClose ? null : this.props.renderCloseIcon ? (
+              this.props.renderCloseIcon(styleCloseIcon, this.onClose)
+            ) : (
+              <span className={styleCloseIcon} onClick={this.onClose}>
+                ✕
+              </span>
+            )}
             {this.props.renderContent(this.onClose)}
           </div>
         </CSSTransition>
