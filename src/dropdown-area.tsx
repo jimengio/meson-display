@@ -10,7 +10,6 @@ let containerName = "meson-display-container";
 import React, { FC, useEffect, useState, ReactNode, RefObject, CSSProperties } from "react";
 import ReactDOM from "react-dom";
 import { rowParted, column, immerHelpers, ImmerStateFunc, MergeStateFunc } from "@jimengio/shared-utils";
-import JimoIcon, { EJimoIcon } from "@jimengio/jimo-icons";
 
 let bus = new EventEmitter();
 let menuEvent = "menu-event";
@@ -106,6 +105,16 @@ export default class DropdownArea extends React.Component<IProps, IState> {
   renderDropdown() {
     let { position } = this.state;
 
+    let getSvg = (color: string, width: number, height: number) => (
+      <svg width={width} height={height} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 44 44">
+        <path
+          d="M22 20.586L41.799.786a1 1 0 1 1 1.414 1.415L23.414 22l19.8 19.799a1 1 0 1 1-1.415 1.414L22 23.414l-19.799 19.8a1 1 0 0 1-1.414-1.415L20.586 22 .786 2.201A1 1 0 0 1 2.202.787L22 20.586z"
+          fill={color}
+          fillRule="nonzero"
+        />
+      </svg>
+    );
+
     return ReactDOM.createPortal(
       <div onClick={this.onContainerClick} className={styleAnimations}>
         <CSSTransition in={this.state.visible} unmountOnExit={true} classNames="dropdown" timeout={transitionDuration}>
@@ -126,7 +135,11 @@ export default class DropdownArea extends React.Component<IProps, IState> {
                 <span>{this.props.title}</span>
               </div>
             ) : null}
-            {this.props.hideClose ? null : <JimoIcon name={EJimoIcon.slimCross} className={styleCloseIcon} onClick={this.onClose} />}
+            {this.props.hideClose ? null : (
+              <span className={styleCloseIcon} onClick={this.onClose}>
+                {getSvg("#aaa", 14, 14)}
+              </span>
+            )}
             {this.props.renderContent(this.onClose)}
           </div>
         </CSSTransition>
