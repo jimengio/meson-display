@@ -2,7 +2,6 @@ import React, { FC, useState } from "react";
 import { css, cx } from "emotion";
 import DropdownArea from "../../src/dropdown-area";
 import { expand } from "@jimengio/shared-utils";
-import JimoIcon, { EJimoIcon } from "@jimengio/jimo-icons";
 
 let DemoDropdownArea: FC<{}> = (props) => {
   /** Methods */
