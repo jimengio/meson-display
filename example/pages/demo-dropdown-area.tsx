@@ -10,12 +10,7 @@ let DemoDropdownArea: FC<{}> = (props) => {
   /** Renderers */
   return (
     <div className={cx(expand, styleContainer)}>
-      <DropdownArea
-        className={styleTrigger}
-        title="A title"
-        renderContent={(onClose) => "Some content"}
-        renderCloseIcon={(className, onClose) => <JimoIcon name={EJimoIcon.slimCross} className={className} onClick={onClose} />}
-      >
+      <DropdownArea className={styleTrigger} title="A title" renderContent={(onClose) => "Some content"}>
         <div>Content with title</div>
       </DropdownArea>
 

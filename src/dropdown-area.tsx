@@ -14,6 +14,16 @@ import { rowParted, column, immerHelpers, ImmerStateFunc, MergeStateFunc } from 
 let bus = new EventEmitter();
 let menuEvent = "menu-event";
 
+let svg = `<svg width="44" height="44" xmlns="http://www.w3.org/2000/svg">
+<path
+  d="M22 20.586L41.799.786a1 1 0 1 1 1.414 1.415L23.414 22l19.8 19.799a1 1 0 1 1-1.415 1.414L22 23.414l-19.799 19.8a1 1 0 0 1-1.414-1.415L20.586 22 .786 2.201A1 1 0 0 1 2.202.787L22 20.586z"
+  fill="#BDBDBD"
+  fill-rule="nonzero"
+/>
+</svg>`;
+
+let closeIcon = `data:image/svg+xml;base64,${window.btoa(svg)}`;
+
 interface IProps {
   title?: string;
   /** trigger 区域的样式 */
@@ -28,9 +38,6 @@ interface IProps {
   guessHeight?: number;
   renderContent: (onClose: () => void) => ReactNode;
   hideClose?: boolean;
-
-  /** 分离依赖到外部, 默认使用 UTF8 字符 ✕ */
-  renderCloseIcon?: (className: string, onClose: () => void) => ReactNode;
 }
 
 interface IState {
@@ -128,13 +135,7 @@ export default class DropdownArea extends React.Component<IProps, IState> {
                 <span>{this.props.title}</span>
               </div>
             ) : null}
-            {this.props.hideClose ? null : this.props.renderCloseIcon ? (
-              this.props.renderCloseIcon(styleCloseIcon, this.onClose)
-            ) : (
-              <span className={styleCloseIcon} onClick={this.onClose}>
-                ✕
-              </span>
-            )}
+            {this.props.hideClose ? null : <span className={styleCloseIcon} onClick={this.onClose}></span>}
             {this.props.renderContent(this.onClose)}
           </div>
         </CSSTransition>
@@ -273,6 +274,10 @@ let styleCloseIcon = css`
   position: absolute;
   top: 14px;
   right: 16px;
+  width: 14px;
+  height: 14px;
+  background-image: url(${closeIcon});
+  background-size: 14px 14px;
 `;
 
 let styleTrigger = css`
