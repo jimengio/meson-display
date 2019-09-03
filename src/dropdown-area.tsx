@@ -1,5 +1,5 @@
 import { css, cx } from "emotion";
-import { CSSTransition, TransitionGroup } from "react-transition-group";
+import { CSSTransition } from "react-transition-group";
 import EventEmitter from "eventemitter3";
 
 let transitionDuration = 160;
@@ -7,9 +7,9 @@ let relativeOffset = 4; /** 菜单相对弹出位置有一个上下偏差, 以�
 let containOffset = 2; /** 菜单相对弹出位置有一个左右偏差, 以便看起来不要过于死板 */
 let containerName = "meson-display-container";
 
-import React, { FC, useEffect, useState, ReactNode, RefObject, CSSProperties } from "react";
+import React, { FC, useEffect, useState, ReactNode, CSSProperties, useRef } from "react";
 import ReactDOM from "react-dom";
-import { rowParted, column, immerHelpers, ImmerStateFunc, MergeStateFunc } from "@jimengio/shared-utils";
+import { rowParted, column } from "@jimengio/shared-utils/lib/layout";
 
 let bus = new EventEmitter();
 let menuEvent = "menu-event";
@@ -30,81 +30,120 @@ interface IProps {
   hideClose?: boolean;
 }
 
-interface IState {
-  visible: boolean;
-  inheritedWidth: number;
-  position: {
-    top?: number;
-    bottom?: number;
-    left?: number;
-    right?: number;
-  };
+interface IPosition {
+  top?: number;
+  bottom?: number;
+  left?: number;
+  right?: number;
 }
 
-export default class DropdownArea extends React.Component<IProps, IState> {
-  el: HTMLDivElement;
-  triggerEl: RefObject<HTMLDivElement>;
+let DropdownArea: FC<IProps> = (props) => {
+  let [visible, setVisible] = useState(false);
+  let [position, setPosition] = useState({} as IPosition);
+  let [inheritedWidth, setInheritedWidth] = useState(null as number);
 
-  sessionToken: number;
+  let el = useRef<HTMLDivElement>(null);
+  let triggerEl = useRef<HTMLDivElement>(null);
+  let sessionToken = useRef<number>(null);
 
-  constructor(props: IProps) {
-    super(props);
+  /** Methods */
 
-    this.el = document.createElement("div");
+  let onTriggerClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    if (visible) {
+      setVisible(false);
+      return;
+    }
 
-    this.state = {
-      visible: false,
-      inheritedWidth: undefined,
-      position: {},
+    let rect = triggerEl.current.getBoundingClientRect();
+
+    // 如果计算宽度超出显示区域, 往左弹出
+    let almostOut = false;
+    let reachingBottom = false;
+    if (props.width != null) {
+      almostOut = rect.left + props.width > window.innerWidth;
+    }
+    if (props.guessHeight != null) {
+      reachingBottom = rect.bottom + props.guessHeight > window.innerHeight;
+    }
+
+    if (props.alignToRight || almostOut) {
+      setVisible(true);
+      setInheritedWidth(rect.width);
+      setPosition({
+        top: reachingBottom ? null : rect.bottom + relativeOffset,
+        right: Math.max(window.innerWidth - rect.right - containOffset, relativeOffset),
+        bottom: reachingBottom ? 8 : null,
+      });
+    } else {
+      setVisible(true);
+      setInheritedWidth(rect.width);
+      setPosition({
+        top: reachingBottom ? null : rect.bottom + relativeOffset,
+        left: Math.max(rect.left - containOffset, relativeOffset),
+        bottom: reachingBottom ? 8 : null,
+      });
+    }
+
+    event.stopPropagation();
+
+    // 广播机制, 通知其他的菜单在接受到消息的时候关闭
+    let newToken = Math.random();
+    sessionToken.current = newToken;
+    bus.emit(menuEvent, newToken);
+  };
+
+  let onClose = () => {
+    setVisible(false);
+  };
+
+  /** 判断是否是自身发起的广播, 如果是自己的, 不需要关闭 */
+  let detectOnClose = (token: any) => {
+    if (token !== sessionToken.current) {
+      onClose();
+    }
+  };
+
+  let onContainerClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    event.stopPropagation();
+  };
+
+  /** Effects */
+
+  if (el.current == null) {
+    el.current = document.createElement("div");
+  }
+
+  useEffect(() => {
+    let root = document.querySelector(`.${containerName}`);
+
+    if (root == null) {
+      console.error(`Required a container element in body: <div class="${containerName}" />`);
+      return;
+    }
+
+    root.appendChild(el.current);
+
+    bus.on(menuEvent, detectOnClose);
+    window.addEventListener("click", onClose);
+
+    return () => {
+      let root = document.querySelector(`.${containerName}`);
+
+      if (root == null) {
+        console.error(`Required a container element in body: <div class="${containerName}" />`);
+        return;
+      }
+
+      root.removeChild(el.current);
+
+      bus.removeListener(menuEvent, detectOnClose);
+      window.removeEventListener("click", onClose);
     };
+  }, []);
 
-    this.triggerEl = React.createRef();
-  }
+  /** Renderers */
 
-  immerState = immerHelpers.immerState as ImmerStateFunc<IState>;
-  mergeState = immerHelpers.mergeState as MergeStateFunc<IState>;
-
-  componentDidMount() {
-    let root = document.querySelector(`.${containerName}`);
-
-    if (root == null) {
-      console.error(`Required a container element in body: <div class="${containerName}" />`);
-      return;
-    }
-
-    root.appendChild(this.el);
-
-    window.addEventListener("click", this.onClose);
-    bus.on(menuEvent, this.detectOnClose);
-  }
-
-  componentWillUnmount() {
-    let root = document.querySelector(`.${containerName}`);
-
-    if (root == null) {
-      console.error(`Required a container element in body: <div class="${containerName}" />`);
-      return;
-    }
-
-    root.removeChild(this.el);
-    window.removeEventListener("click", this.onClose);
-    bus.removeListener(menuEvent, this.detectOnClose);
-  }
-
-  render() {
-    return (
-      <>
-        <div className={cx(styleTrigger, this.props.className)} style={this.props.style} onClick={this.onTriggerClick} ref={this.triggerEl}>
-          {this.props.children}
-        </div>
-        {this.renderDropdown()}
-      </>
-    );
-  }
-
-  renderDropdown() {
-    let { position } = this.state;
-
+  let renderDropdown = () => {
     let getSvg = (color: string, width: number, height: number) => (
       <svg width={width} height={height} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 44 44">
         <path
@@ -116,101 +155,49 @@ export default class DropdownArea extends React.Component<IProps, IState> {
     );
 
     return ReactDOM.createPortal(
-      <div onClick={this.onContainerClick} className={styleAnimations}>
-        <CSSTransition in={this.state.visible} unmountOnExit={true} classNames="dropdown" timeout={transitionDuration}>
+      <div onClick={onContainerClick} className={styleAnimations}>
+        <CSSTransition in={visible} unmountOnExit={true} classNames="dropdown" timeout={transitionDuration}>
           <div
-            className={cx(column, stylePopPage, "modal-card", this.props.cardClassName)}
+            className={cx(column, stylePopPage, "modal-card", props.cardClassName)}
             style={{
               maxHeight: window.innerHeight - 80,
-              width: this.props.width || this.state.inheritedWidth,
+              width: props.width || inheritedWidth,
               top: position.top,
               bottom: position.bottom,
               left: position.left,
               right: position.right,
             }}
-            onClick={this.onContainerClick}
+            onClick={onContainerClick}
           >
-            {this.props.title ? (
+            {props.title ? (
               <div className={cx(rowParted, styleHeader)}>
-                <span>{this.props.title}</span>
+                <span>{props.title}</span>
               </div>
             ) : null}
-            {this.props.hideClose ? null : (
-              <span className={styleCloseIcon} onClick={this.onClose}>
+            {props.hideClose ? null : (
+              <span className={styleCloseIcon} onClick={onClose}>
                 {getSvg("#aaa", 14, 14)}
               </span>
             )}
-            {this.props.renderContent(this.onClose)}
+            {props.renderContent(onClose)}
           </div>
         </CSSTransition>
       </div>,
-      this.el
+      el.current
     );
-  }
-
-  onTriggerClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    if (this.state.visible) {
-      this.mergeState({ visible: false });
-      return;
-    }
-
-    let rect = this.triggerEl.current.getBoundingClientRect();
-
-    // 如果计算宽度超出显示区域, 往左弹出
-    let almostOut = false;
-    let reachingBottom = false;
-    if (this.props.width != null) {
-      almostOut = rect.left + this.props.width > window.innerWidth;
-    }
-    if (this.props.guessHeight != null) {
-      reachingBottom = rect.bottom + this.props.guessHeight > window.innerHeight;
-    }
-
-    if (this.props.alignToRight || almostOut) {
-      this.mergeState({
-        visible: true,
-        inheritedWidth: rect.width,
-        position: {
-          top: reachingBottom ? null : rect.bottom + relativeOffset,
-          right: Math.max(window.innerWidth - rect.right - containOffset, relativeOffset),
-          bottom: reachingBottom ? 8 : null,
-        },
-      });
-    } else {
-      this.mergeState({
-        visible: true,
-        inheritedWidth: rect.width,
-        position: {
-          top: reachingBottom ? null : rect.bottom + relativeOffset,
-          left: Math.max(rect.left - containOffset, relativeOffset),
-          bottom: reachingBottom ? 8 : null,
-        },
-      });
-    }
-
-    event.stopPropagation();
-
-    // 广播机制, 通知其他的菜单在接受到消息的时候关闭
-    let newToken = Math.random();
-    this.sessionToken = newToken;
-    bus.emit(menuEvent, newToken);
   };
 
-  onClose = () => {
-    this.mergeState({ visible: false });
-  };
+  return (
+    <>
+      <div className={cx(styleTrigger, props.className)} style={props.style} onClick={onTriggerClick} ref={triggerEl}>
+        {props.children}
+      </div>
+      {renderDropdown()}
+    </>
+  );
+};
 
-  /** 判断是否是自身发起的广播, 如果是自己的, 不需要关闭 */
-  detectOnClose = (token: any) => {
-    if (token !== this.sessionToken) {
-      this.onClose();
-    }
-  };
-
-  onContainerClick(event: React.MouseEvent<HTMLDivElement, MouseEvent>) {
-    event.stopPropagation();
-  }
-}
+export default DropdownArea;
 
 let styleAnimations = css`
   .dropdown-enter {
