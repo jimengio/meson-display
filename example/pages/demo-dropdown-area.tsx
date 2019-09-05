@@ -30,6 +30,27 @@ let DemoDropdownArea: FC<{}> = (props) => {
       </DropdownArea>
 
       <DropdownArea
+        className={styleTrigger}
+        title="A title"
+        renderContent={(onClose) => "Some content"}
+        renderTrigger={(openMenu, closeMenu) => {
+          return (
+            <input
+              className={styleInput}
+              placeholder={"Custom trigger"}
+              onChange={(event) => {
+                if (event.target.value === "") {
+                  closeMenu();
+                } else {
+                  openMenu();
+                }
+              }}
+            />
+          );
+        }}
+      ></DropdownArea>
+
+      <DropdownArea
         className={cx(styleTrigger)}
         renderContent={(onClose) => (
           <div>
@@ -65,4 +86,11 @@ let styleTrigger = css`
 
 let styleWider = css`
   width: 300px;
+`;
+
+let styleInput = css`
+  line-height: 24px;
+  font-size: 14px;
+  padding: 0 8px;
+  outline: none;
 `;

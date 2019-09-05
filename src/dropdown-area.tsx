@@ -11,6 +11,8 @@ import React, { FC, useEffect, useState, ReactNode, CSSProperties, useRef } from
 import ReactDOM from "react-dom";
 import { rowParted, column } from "@jimengio/shared-utils/lib/layout";
 
+type FuncVoid = () => void;
+
 let bus = new EventEmitter();
 let menuEvent = "menu-event";
 
@@ -26,8 +28,13 @@ interface IProps {
   width?: number;
   /** 不一定精确, 根据区域检测如果超出屏幕, 菜单将上移放在屏幕边缘 */
   guessHeight?: number;
-  renderContent: (onClose: () => void) => ReactNode;
+  renderContent: (closeMenu: FuncVoid) => ReactNode;
   hideClose?: boolean;
+
+  /** optional, by default, the area responds to click event,
+   * there are cases we want to control how the menu is created
+   */
+  renderTrigger?: (openMenu: FuncVoid, closeMenu: FuncVoid) => ReactNode;
 }
 
 interface IPosition {
@@ -51,6 +58,16 @@ let DropdownArea: FC<IProps> = (props) => {
   let onTriggerClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     if (visible) {
       setVisible(false);
+      return;
+    }
+
+    event.stopPropagation();
+
+    openMenu();
+  };
+
+  let openMenu = () => {
+    if (visible) {
       return;
     }
 
@@ -83,8 +100,6 @@ let DropdownArea: FC<IProps> = (props) => {
         bottom: reachingBottom ? 8 : null,
       });
     }
-
-    event.stopPropagation();
 
     // 广播机制, 通知其他的菜单在接受到消息的时候关闭
     let newToken = Math.random();
@@ -187,6 +202,17 @@ let DropdownArea: FC<IProps> = (props) => {
     );
   };
 
+  if (props.renderTrigger != null) {
+    return (
+      <>
+        <div className={cx(styleTrigger, props.className)} style={props.style} ref={triggerEl}>
+          {props.renderTrigger(openMenu, onClose)}
+        </div>
+        {renderDropdown()}
+      </>
+    );
+  }
+
   return (
     <>
       <div className={cx(styleTrigger, props.className)} style={props.style} onClick={onTriggerClick} ref={triggerEl}>
@@ -204,7 +230,7 @@ let styleAnimations = css`
     opacity: 0;
 
     &.modal-card {
-      transform: translate(0, -20px);
+      transform: translate(0, -12px) scale(0.9);
     }
   }
   .dropdown-enter.dropdown-enter-active {
@@ -227,7 +253,7 @@ let styleAnimations = css`
     transition-duration: ${transitionDuration}ms;
 
     &.modal-card {
-      transform: translate(0px, -20px);
+      transform: translate(0px, -12px) scale(0.9);
       transition: ${transitionDuration}ms;
     }
   }
