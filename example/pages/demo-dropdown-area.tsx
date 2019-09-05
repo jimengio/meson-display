@@ -33,13 +33,17 @@ let DemoDropdownArea: FC<{}> = (props) => {
         className={styleTrigger}
         title="A title"
         renderContent={(onClose) => "Some content"}
-        renderTrigger={(openMenu) => {
+        renderTrigger={(openMenu, closeMenu) => {
           return (
             <input
               className={styleInput}
               placeholder={"Custom trigger"}
               onChange={(event) => {
-                openMenu();
+                if (event.target.value === "") {
+                  closeMenu();
+                } else {
+                  openMenu();
+                }
               }}
             />
           );
