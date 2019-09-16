@@ -7,16 +7,7 @@ export const routerRules: IRouteRule[] = [
     path: "grouped-timeline",
   },
   {
-    path: "image-viewer",
-  },
-  {
-    path: "dropdown-area",
-  },
-  {
     path: "with-overflow",
-  },
-  {
-    path: "dropdown-menu",
   },
   { path: "else" },
   { path: "", name: "home" },

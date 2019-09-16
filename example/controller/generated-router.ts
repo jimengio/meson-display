@@ -31,29 +31,11 @@ export let genRouter = {
     path: () => `/grouped-timeline`,
     go: () => switchPath(`/grouped-timeline`),
   },
-  imageViewer: {
-    name: "image-viewer",
-    raw: "image-viewer",
-    path: () => `/image-viewer`,
-    go: () => switchPath(`/image-viewer`),
-  },
-  dropdownArea: {
-    name: "dropdown-area",
-    raw: "dropdown-area",
-    path: () => `/dropdown-area`,
-    go: () => switchPath(`/dropdown-area`),
-  },
   withOverflow: {
     name: "with-overflow",
     raw: "with-overflow",
     path: () => `/with-overflow`,
     go: () => switchPath(`/with-overflow`),
-  },
-  dropdownMenu: {
-    name: "dropdown-menu",
-    raw: "dropdown-menu",
-    path: () => `/dropdown-menu`,
-    go: () => switchPath(`/dropdown-menu`),
   },
   else: {
     name: "else",
