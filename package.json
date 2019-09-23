@@ -1,6 +1,6 @@
 {
   "name": "@jimengio/meson-display",
-  "version": "0.2.0",
+  "version": "0.2.1-a1",
   "description": "",
   "main": "./lib/index.js",
   "typings": "./lib/index.d.ts",
@@ -12,7 +12,7 @@
     "release": "rm -rfv dist/* && yarn dll-release && time webpack --config webpack/release.js",
     "build": "yarn release",
     "serve": "http-server dist/ -s",
-    "compile": "tsc -d --project tsconfig-compile.json --outDir lib/",
+    "compile": "rm -rfv lib/* && tsc -d --project tsconfig-compile.json --outDir lib/",
     "prepare": "yarn compile",
     "upload": "rsync -avr --progress dist/ fe.jimu.io:~/repo/jimengio/meson-display",
     "gen-router": "ts-node -P tsconfig-node.json -r tsconfig-paths/register example/gen-router.ts",
