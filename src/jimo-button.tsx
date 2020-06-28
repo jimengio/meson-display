@@ -1,7 +1,6 @@
 import React from "react";
 import { css, cx } from "emotion";
-import { immerHelpers, ImmerStateFunc, MergeStateFunc } from "@jimengio/shared-utils";
-import { rowCenter } from "@jimengio/shared-utils";
+import { rowCenter } from "@jimengio/flex-styles";
 import FaIcon, { EFaIcon } from "@jimengio/fa-icons";
 import Space from "./space";
 
@@ -20,9 +19,6 @@ export default class JimoButton extends React.Component<IProps, IState> {
 
     this.state = {};
   }
-
-  immerState = immerHelpers.immerState as ImmerStateFunc<IState>;
-  mergeState = immerHelpers.mergeState as MergeStateFunc<IState>;
 
   render() {
     let hasIcon = this.props.icon != null;
