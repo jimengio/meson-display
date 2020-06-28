@@ -2,7 +2,6 @@ import _ from "lodash";
 import React from "react";
 import ReactDOM from "react-dom";
 import { css, cx } from "emotion";
-import { immerHelpers, ImmerStateFunc, MergeStateFunc } from "@jimengio/shared-utils";
 import { calculatePopoverPosition } from "./util";
 
 const canvasElement = document.createElement("canvas");
@@ -59,9 +58,6 @@ export default class WithOverflow extends React.Component<IProps, IState> {
     };
   }
 
-  immerState = immerHelpers.immerState as ImmerStateFunc<IState>;
-  mergeState = immerHelpers.mergeState as MergeStateFunc<IState>;
-
   render() {
     return (
       <span
@@ -98,13 +94,13 @@ export default class WithOverflow extends React.Component<IProps, IState> {
       let rect = this._rootElement.getBoundingClientRect();
       let position = calculatePopoverPosition(approximateWidth, approximateHeight, rect);
 
-      this.mergeState({ showFullText: true, position });
+      this.setState({ showFullText: true, position });
     }
   };
 
   onMouseLeave = (event) => {
     if (this.state.showFullText) {
-      this.mergeState({ showFullText: false });
+      this.setState({ showFullText: false });
     }
   };
 }

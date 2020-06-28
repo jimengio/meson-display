@@ -1,6 +1,5 @@
 import React from "react";
 import { css, cx } from "emotion";
-import { immerHelpers, ImmerStateFunc, MergeStateFunc } from "@jimengio/shared-utils";
 import WithOverflow from "../../src/with-overflow";
 
 interface IProps {}
@@ -13,9 +12,6 @@ export default class DemoWithOverflow extends React.Component<IProps, IState> {
 
     this.state = {};
   }
-
-  immerState = immerHelpers.immerState as ImmerStateFunc<IState>;
-  mergeState = immerHelpers.mergeState as MergeStateFunc<IState>;
 
   render() {
     return (

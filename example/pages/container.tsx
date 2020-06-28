@@ -1,7 +1,7 @@
 import React from "react";
 import { parseRoutePath, IRouteParseResult } from "@jimengio/ruled-router";
 import { css, cx } from "emotion";
-import { row, fullHeight, fullscreen } from "@jimengio/shared-utils";
+import { row, fullHeight, fullscreen } from "@jimengio/flex-styles";
 
 import Home from "./home";
 import Content from "./content";
